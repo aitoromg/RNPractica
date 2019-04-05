@@ -6,5 +6,11 @@ export default StyleSheet.create({
     flex: 1,
     backgroundColor: colors.main
   },
-  list: { paddingTop: 20 }
+  list: { paddingTop: 20 },
+  noResults: {
+    color: colors.white,
+    textAlign: "center",
+    fontSize: 20,
+    margin: 12
+  }
 });

@@ -11,9 +11,9 @@ export function fetchMovies() {
     params: {
       sort_by: 'popularity.desc',
       api_key: 'd7873befdfa24c79ae93d005a7621ef0',
-      language: 'es-ES',
+      language: 'en-EN',
       region: 'ES',
-      primary_release_year: '2019'
+      primary_release_year: '2019' // 1900 (to force no results)
     }
   });
 }

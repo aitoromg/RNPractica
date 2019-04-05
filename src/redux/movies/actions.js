@@ -9,8 +9,17 @@ function updateMoviesList(list, total) {
   };
 }
 
+function updateFetching(value) {
+  // ACCIÓN PURA
+  return {
+    type: types.MOVIES_UPDATE_FETCHING,
+    value
+  };
+}
+
 export function fetchMoviesList() {
   return function(dispatch, getState) {
+    dispatch(updateFetching(true));
     api
       .fetchMovies()
       .then(res => {
@@ -21,6 +30,7 @@ export function fetchMoviesList() {
       })
       .catch(err => {
         console.error("fetchMovies err: ", err);
-      });
+      })
+      .finally(() => dispatch(updateFetching(false)));
   };
 }
