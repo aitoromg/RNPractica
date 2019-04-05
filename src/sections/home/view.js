@@ -2,30 +2,16 @@ import React, { Component } from "react";
 import { SafeAreaView, FlatList } from "react-native";
 import styles from "./styles";
 import { Actions } from "react-native-router-flux";
-import * as api from "../../webservices";
 import { MovieCell } from "../../widgets";
 
 class Home extends Component {
   constructor(props) {
     super(props);
-    this.state = { housesList: [] };
-    this._fetchMoviesList();
-  }
-
-  _fetchMoviesList() {
-    api
-      .fetchMovies()
-      .then(res => {
-        console.log(res.data.results);
-        this.setState({ moviesList: res.data.results });
-      })
-      .catch(err => {
-        console.error("fetchMovies err: ", err);
-      });
+    this.props.getMoviesList();
   }
 
   _onMovieTapped = movie => {
-    alert("_onMovieTapped");
+    Actions.Detail({ movie, title: movie.title });
   };
 
   _keyExtractor = (item, index) => `${item.id}`;
@@ -35,10 +21,11 @@ class Home extends Component {
   );
 
   render() {
-    const { moviesList } = this.state;
+    const { moviesList } = this.props;
     return (
       <SafeAreaView style={styles.container}>
         <FlatList
+          style={styles.list}
           data={moviesList}
           keyExtractor={this._keyExtractor}
           renderItem={this._renderItem}
