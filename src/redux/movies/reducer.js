@@ -2,7 +2,8 @@ import * as types from "./types";
 
 const initialState = {
   list: [],
-  total: 0,
+  page: 0,
+  total_pages: 0,
   isFetching: false
 };
 
@@ -12,7 +13,8 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         list: action.list,
-        total: action.total
+        page: action.page,
+        total_pages: action.total_pages
       };
 
     case types.MOVIES_UPDATE_FETCHING:

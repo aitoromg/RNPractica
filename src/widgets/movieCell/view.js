@@ -16,7 +16,7 @@ class MovieCell extends Component {
 
   render() {
     const { movie } = this.props;
-    const source = movie && movie.poster_path ? { uri: `${BASE_IMG_URL}${movie.poster_path}` } : null;
+    const source = movie && movie.poster_path ? { uri: `${BASE_IMG_URL}${movie.poster_path}` } : require('../../resources/placeholder.png');
     return (
       <TouchableOpacity
         onPress={() => this._onCellTapped()}

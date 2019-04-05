@@ -38,27 +38,33 @@ class Detail extends Component {
     }
 
     const form = {
-      vote,
-      image: this.state.image ? "data:image/jpeg;base64," + this.state.image.data : null
+      vote
     };
-    
+
+    if(this.state.image){
+      form.image = `data:image/jpeg;base64,${this.state.image.data}`;
+      // Fix to show part of the image data in the alert
+      form.image = `${form.image.substr(0,100)}...`;
+    }
+
     Alert.alert(
-      'Movie App',
       'Form submitted successfully',
+      JSON.stringify(form),
       [
-        {text: 'Done', onPress: () => {
-          console.log("Form data: ", form);
-          this.setState({ vote: "", image: null });
-        }},
+        {
+          text: 'Done',
+          onPress: () => {
+            this.setState({ vote: "", image: null });
+          }
+        }
       ],
-      {cancelable: false},
+      {cancelable: false}
     );
   };
 
-
   render() {
     const { movie } = this.props;
-    const source = movie && movie.poster_path ? { uri: `${BASE_IMG_URL}${movie.poster_path}` } : null;
+    const source = movie && movie.poster_path ? { uri: `${BASE_IMG_URL}${movie.poster_path}` } : require('../../resources/placeholder.png');
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView style={{ flex: 1 }}>
@@ -74,8 +80,13 @@ class Detail extends Component {
               <Text style={styles.title}>{"Vote average"}</Text>
               <Text style={styles.label}>{movie.vote_average}</Text>
             </View>
-            <Text style={styles.title}>{"Overview"}</Text>
-            <Text style={styles.label}>{movie.overview}</Text>
+            {
+                movie.overview !== '' &&
+                <>
+                  <Text style={styles.title}>{"Overview"}</Text>
+                  <Text style={styles.label}>{movie.overview}</Text>
+                </>
+            }
           </View>
           <View style={{ margin: 20, marginTop: 0 }}>
             <Text style={styles.title}>{"Form"}</Text>
@@ -91,12 +102,15 @@ class Detail extends Component {
             <CameraPicker
               value={this.state.image}
               onChange={image => this.setState({ image })}
+              containerStyle={{ borderRadius: 5 }}
+              labelStyle={{ fontSize: 15 }}
             />
           </View>
           <Button
             label={"Send"}
             onPress={this._onSubmit}
             buttonStyle={{ margin: 20 }}
+            labelStyle={{ fontSize: 15 }}
           />
         </ScrollView>
       </SafeAreaView>

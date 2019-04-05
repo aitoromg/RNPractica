@@ -5,14 +5,16 @@ import * as MoviesActions from "../../redux/movies/actions";
 const mapStateToProps = state => {
   return {
     moviesList: state.movies.list,
+    moviesPage: state.movies.page,
+    moviesPageTotal: state.movies.total_pages,
     isFetching: state.movies.isFetching
   };
 };
 
 const mapDispatchToProps = (dispatch, props) => {
   return {
-    getMoviesList: () => {
-      dispatch(MoviesActions.fetchMoviesList());
+    getMoviesList: (movies, page) => {
+      dispatch(MoviesActions.fetchMoviesList(movies, page));
     }
   };
 };

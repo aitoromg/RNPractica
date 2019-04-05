@@ -19,20 +19,17 @@ class CameraPicker extends Component {
   render() {
     const { value, label, containerStyle, labelStyle } = this.props;
     const source = value ? { uri: value.uri } : null;
-
     return (
       <TouchableOpacity
         style={[styles.container, containerStyle]}
         onPress={this._showImagePicker}
       >
         <Image source={source} style={styles.image} />
-        <View
-          style={[
-            styles.labelContainer,
-            source ? {} : { backgroundColor: "transparent" }
-          ]}
-        >
-          <Text style={[styles.label, labelStyle]}>{label.toUpperCase()}</Text>
+        <View style={[styles.labelContainer]}>
+        {
+            !source &&
+            <Text style={[styles.label, labelStyle]}>{label.toUpperCase()}</Text>
+        }
         </View>
       </TouchableOpacity>
     );

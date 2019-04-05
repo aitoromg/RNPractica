@@ -8,7 +8,7 @@ import * as colors from "../../commons/colors";
 class Home extends Component {
   constructor(props) {
     super(props);
-    this.props.getMoviesList();
+    props.getMoviesList();
   }
 
   _onMovieTapped = movie => {
@@ -29,6 +29,18 @@ class Home extends Component {
     return <Text style={styles.noResults}>{"No movies available"}</Text>;
   };
 
+  _onEndReached = ({ distanceFromEnd }) => {
+    const { moviesList, moviesPage, moviesPageTotal, isFetching } = this.props;
+    if (
+      distanceFromEnd > 100 &&
+      !isFetching &&
+      moviesList.length &&
+      moviesPage < moviesPageTotal
+    ) {
+      this.props.getMoviesList(moviesList, moviesPage+1);
+    }
+  };
+
   render() {
     const { moviesList, isFetching } = this.props;
     return (
@@ -40,6 +52,8 @@ class Home extends Component {
           renderItem={this._renderItem}
           numColumns={2}
           ListEmptyComponent={_ => this._renderNoResults(isFetching)}
+          onEndReached={this._onEndReached}
+          onEndReachedThreshold={0.5}
           refreshControl={
             <RefreshControl
               onRefresh={this.props.getMoviesList}

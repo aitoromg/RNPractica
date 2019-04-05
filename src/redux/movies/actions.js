@@ -1,11 +1,12 @@
 import * as types from "./types";
 import * as api from "../../webservices";
 
-function updateMoviesList(list, total) {
+function updateMoviesList(list, page, total_pages) {
   return {
     type: types.MOVIES_UPDATE_LIST,
-    list: list,
-    total
+    list,
+    page,
+    total_pages
   };
 }
 
@@ -17,16 +18,16 @@ function updateFetching(value) {
   };
 }
 
-export function fetchMoviesList() {
+export function fetchMoviesList(movieList, page) {
   return function(dispatch, getState) {
     dispatch(updateFetching(true));
     api
-      .fetchMovies()
+      .fetchMovies(page)
       .then(res => {
-        const list = res.data.results;
-        const total = res.data.total_pages;
-        console.log("fetchMoviesList ok: ", list);
-        dispatch(updateMoviesList(list, total));
+        const list = !movieList ? res.data.results : movieList.concat(res.data.results);
+        const page = res.data.page;
+        const total_pages = res.data.total_pages;
+        dispatch(updateMoviesList(list, page, total_pages));
       })
       .catch(err => {
         console.error("fetchMovies err: ", err);
